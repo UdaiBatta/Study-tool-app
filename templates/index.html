@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Focus Mode 📚</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">📚</span>
+                <h1>Study Focus</h1>
+            </div>
+            
+            <div class="status-badge" id="statusBadge">
+                <span class="status-dot"></span>
+                <span class="status-text">Ready</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Timer Card -->
+            <div class="card timer-card">
+                <h2 class="card-title">Focus Timer</h2>
+                <div class="timer-display" id="timerDisplay">25:00</div>
+                <div class="timer-controls">
+                    <button class="btn btn-primary" id="startBtn" onclick="toggleTimer()">
+                        <span class="btn-icon">▶</span>
+                        Start Session
+                    </button>
+                    <button class="btn btn-secondary" id="resetBtn" onclick="resetTimer()">
+                        <span class="btn-icon">↻</span>
+                        Reset
+                    </button>
+                </div>
+                <div class="timer-presets">
+                    <button class="preset-btn" onclick="setTimer(15)">15m</button>
+                    <button class="preset-btn active" onclick="setTimer(25)">25m</button>
+                    <button class="preset-btn" onclick="setTimer(45)">45m</button>
+                    <button class="preset-btn" onclick="setTimer(60)">60m</button>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-value" id="sessionTime">0m</div>
+                    <div class="stat-label">Session Time</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🚫</div>
+                    <div class="stat-value" id="blockedCount">0</div>
+                    <div class="stat-label">Sites Blocked</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-value" id="streakCount">1</div>
+                    <div class="stat-label">Focus Streak</div>
+                </div>
+            </div>
+
+            <!-- Whitelist Card -->
+            <div class="card whitelist-card">
+                <h2 class="card-title">Allowed Study Sites</h2>
+                <p class="card-description">
+                    Add websites you need for studying. All other sites will be blocked!
+                </p>
+                
+                <div class="whitelist-input-group">
+                    <input 
+                        type="text" 
+                        id="whitelistInput" 
+                        class="whitelist-input" 
+                        placeholder="e.g., github.com"
+                        onkeypress="handleWhitelistEnter(event)"
+                    >
+                    <button class="btn btn-add" onclick="addToWhitelist()">
+                        <span class="btn-icon">+</span>
+                        Add
+                    </button>
+                </div>
+
+                <div class="whitelist-tags" id="whitelistTags">
+                    <!-- Default sites -->
+                    <div class="tag">
+                        <span>github.com</span>
+                        <button onclick="removeFromWhitelist(this, 'github.com')">×</button>
+                    </div>
+                    <div class="tag">
+                        <span>stackoverflow.com</span>
+                        <button onclick="removeFromWhitelist(this, 'stackoverflow. com')">×</button>
+                    </div>
+                    <div class="tag">
+                        <span>docs.python.org</span>
+                        <button onclick="removeFromWhitelist(this, 'docs. python.org')">×</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <button class="btn btn-success btn-large" id="blockBtn" onclick="startBlocking()">
+                    <span class="btn-icon">🔒</span>
+                    Start Focus Mode
+                </button>
+                <button class="btn btn-danger btn-large" id="unblockBtn" onclick="stopBlocking()" style="display:none;">
+                    <span class="btn-icon">🔓</span>
+                    Stop Focus Mode
+                </button>
+            </div>
+
+            <!-- Admin Warning -->
+            <div class="warning-card" id="adminWarning" style="display:none;">
+                <div class="warning-icon">⚠️</div>
+                <div class="warning-content">
+                    <h3>Administrator Access Required</h3>
+                    <p id="adminInstructions"></p>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Made by Udai Batta for focused learning | Press Ctrl+C in terminal to stop server</p>
+        </footer>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
