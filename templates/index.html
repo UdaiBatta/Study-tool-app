@@ -95,11 +95,45 @@
                     </div>
                     <div class="tag">
                         <span>stackoverflow.com</span>
-                        <button onclick="removeFromWhitelist(this, 'stackoverflow. com')">×</button>
+                        <button onclick="removeFromWhitelist(this, 'stackoverflow.com')">×</button>
                     </div>
                     <div class="tag">
                         <span>docs.python.org</span>
-                        <button onclick="removeFromWhitelist(this, 'docs. python.org')">×</button>
+                        <button onclick="removeFromWhitelist(this, 'docs.python.org')">×</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blocklist Card (NEW!) -->
+            <div class="card blocklist-card">
+                <h2 class="card-title">🚫 Custom Blocked Sites</h2>
+                <p class="card-description">
+                    Add websites you want to block (in addition to default social media sites)
+                </p>
+                
+                <div class="whitelist-input-group">
+                    <input 
+                        type="text" 
+                        id="blocklistInput" 
+                        class="whitelist-input" 
+                        placeholder="e.g., twitter.com"
+                        onkeypress="handleBlocklistEnter(event)"
+                    >
+                    <button class="btn btn-danger" onclick="addToBlocklist()">
+                        <span class="btn-icon">🚫</span>
+                        Block
+                    </button>
+                </div>
+
+                <div class="blocklist-tags" id="blocklistTags">
+                    <!-- Custom blocked sites will appear here -->
+                </div>
+
+                <div class="info-box">
+                    <div class="info-icon">💡</div>
+                    <div class="info-text">
+                        <strong>Tip:</strong> Your custom blocklist is saved locally and persists between sessions. 
+                        Default sites (Facebook, Instagram, etc.) are always blocked and don't appear here.
                     </div>
                 </div>
             </div>
