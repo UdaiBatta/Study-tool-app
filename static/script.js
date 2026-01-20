@@ -8,6 +8,7 @@ let sessionStartTime = null;
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
     checkStatus();
+    loadBlocklist(); // Load custom blocklist on startup
     setInterval(checkStatus, 5000); // Check status every 5 seconds
     updateTimerDisplay();
 });
@@ -230,6 +231,108 @@ function renderWhitelist() {
 function handleWhitelistEnter(event) {
     if (event.key === 'Enter') {
         addToWhitelist();
+    }
+}
+
+// ===== BLOCKLIST FUNCTIONS =====
+async function loadBlocklist() {
+    try {
+        const response = await fetch('/api/blocklist');
+        const data = await response.json();
+        
+        if (data.success) {
+            renderBlocklist(data.custom_sites);
+        }
+    } catch (error) {
+        console.error('Failed to load blocklist:', error);
+    }
+}
+
+async function addToBlocklist() {
+    const input = document.getElementById('blocklistInput');
+    const site = input.value.trim().toLowerCase();
+    
+    if (!site) {
+        showToast('Please enter a website', 'error');
+        return;
+    }
+    
+    // Remove protocol and www
+    const cleanSite = site.replace(/^(https?:\/\/)?(www\.)?/, '');
+    
+    try {
+        const response = await fetch('/api/blocklist/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                website: cleanSite
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            renderBlocklist(result.blocklist);
+            input.value = '';
+            showToast(`🚫 Added ${cleanSite} to blocklist`, 'success');
+        } else {
+            showToast(`❌ ${result.error}`, 'error');
+        }
+    } catch (error) {
+        showToast('❌ Failed to add to blocklist', 'error');
+    }
+}
+
+async function removeFromBlocklist(button, site) {
+    try {
+        const response = await fetch('/api/blocklist/remove', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                website: site
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            renderBlocklist(result.blocklist);
+            showToast(`✅ Removed ${site} from blocklist`, 'success');
+        } else {
+            showToast(`❌ ${result.error}`, 'error');
+        }
+    } catch (error) {
+        showToast('❌ Failed to remove from blocklist', 'error');
+    }
+}
+
+function renderBlocklist(sites) {
+    const container = document.getElementById('blocklistTags');
+    container.innerHTML = '';
+    
+    if (sites.length === 0) {
+        container.innerHTML = '<p style="color: #6b7280; font-size: 14px;">No custom blocked sites yet. Add some above!</p>';
+        return;
+    }
+    
+    sites.forEach(site => {
+        const tag = document.createElement('div');
+        tag.className = 'tag tag-danger';
+        tag.innerHTML = `
+            <span>${site}</span>
+            <button onclick="removeFromBlocklist(this, '${site}')">×</button>
+        `;
+        container.appendChild(tag);
+    });
+}
+
+function handleBlocklistEnter(event) {
+    if (event.key === 'Enter') {
+        addToBlocklist();
     }
 }
 
