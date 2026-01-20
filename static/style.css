@@ -306,6 +306,54 @@ body {
     transform: rotate(90deg);
 }
 
+/* Tag variant for blocklist */
+.tag-danger {
+    background: var(--danger);
+}
+
+.blocklist-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+/* Info box */
+.info-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(99, 102, 241, 0.1);
+    border-left: 3px solid var(--primary);
+    border-radius: 0.5rem;
+}
+
+.info-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.info-text {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.info-text strong {
+    color: var(--text);
+}
+
+/* Blocklist card specific styling */
+.blocklist-card {
+    border: 2px solid rgba(239, 68, 68, 0.2);
+}
+
+.blocklist-card .card-title {
+    color: var(--danger);
+}
+
 /* ===== BUTTONS ===== */
 .btn {
     padding: 0.875rem 1.5rem;
